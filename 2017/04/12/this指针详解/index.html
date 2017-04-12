@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>观赏</title>
+  <title>this指针详解 | 观赏</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="少壮不努力，老大徒伤悲">
+  <meta name="description" content="我们知道在如下例子中。class Test{public:    Fun(int a)    {        //doSomething    }private:    int a;};Fun(int a)是Test的非静态成员函数，所以编译器在编译期间改写该函数时，会自动将一个名为this的指针当作为第一个参数传入。类&amp;#20284;于：Fun(Test const this，int a);那">
 <meta name="keywords">
 <meta property="og:type" content="article">
-<meta property="og:title" content="观赏">
-<meta property="og:url" content="http://yoursite.com/2017/04/11/test/index.html">
+<meta property="og:title" content="this指针详解">
+<meta property="og:url" content="http://yoursite.com/2017/04/12/this指针详解/index.html">
 <meta property="og:site_name" content="观赏">
-<meta property="og:description" content="少壮不努力，老大徒伤悲">
-<meta property="og:updated_time" content="2017-04-11T15:07:32.809Z">
+<meta property="og:description" content="我们知道在如下例子中。class Test{public:    Fun(int a)    {        //doSomething    }private:    int a;};Fun(int a)是Test的非静态成员函数，所以编译器在编译期间改写该函数时，会自动将一个名为this的指针当作为第一个参数传入。类&amp;#20284;于：Fun(Test const this，int a);那">
+<meta property="og:updated_time" content="2017-04-12T14:43:32.086Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="观赏">
-<meta name="twitter:description" content="少壮不努力，老大徒伤悲">
+<meta name="twitter:title" content="this指针详解">
+<meta name="twitter:description" content="我们知道在如下例子中。class Test{public:    Fun(int a)    {        //doSomething    }private:    int a;};Fun(int a)是Test的非静态成员函数，所以编译器在编译期间改写该函数时，会自动将一个名为this的指针当作为第一个参数传入。类&amp;#20284;于：Fun(Test const this，int a);那">
   
     <link rel="alternative" href="/atom.xml" title="观赏" type="application/atom+xml">
   
@@ -158,12 +158,28 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-test" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-this指针详解" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      this指针详解
+    </h1>
+  
+
+        
+        <a href="/2017/04/12/this指针详解/" class="archive-article-date">
+  	<time datetime="2017-04-12T14:41:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-12</time>
+</a>
+        
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <div id="article_content" class="article_content"><br><br><p>我们知道在如下例子中。</p><br><p></p><br><p></p><br><pre code_snippet_id="2313918" snippet_file_name="blog_20170406_1_8575071" name="code" class="cpp">class Test<br>{<br>public:<br>    Fun(int a)<br>    {<br>        //doSomething<br>    }<br>private:<br>    int a;<br>};</pre><br><p></p><br>Fun(int a)是Test的非静态成员函数，所以编译器在编译期间改写该函数时，会自动将一个名为this的指针当作为第一个参数传入。<br><p></p><br><p>类&#20284;于：<span style="background-color:rgb(240,240,240)">Fun(Test<em> const this，int a);</em></span></p><br><p>那么问题来了，我们理解这个<span style="color:#ff0000">this</span>指针呢？它有哪些用法和限制呢？</p><br><p><br><br></p><br><p>本文试图通过如下几个模块循环渐进的解析this指针，争取达到深入浅出的效果。</p><br><p><span style="color:#ff0000">1，this指针是什么？</span></p><br><p><span style="color:#ff0000">2，this指针的六大属性。</span></p><br><p><span style="color:#ff0000">3，this指针的一些用法。</span></p><br><p><span style="color:#ff0000">4，this指针的注意事项。</span></p><br><p><br><br></p><br><p><strong><span style="font-size:14px; color:#ff0000">1，this指针是什么？</span></strong></p><br><p>关于this指针超级经典的一段话：</p><br><p>当你进入一个房子后， 　　</p><br><p>你可以看见桌子、椅子、地板等， 　　</p><br><p>但是房子你是看不到全貌了。 　　</p><br><p>对于一个类的实例来说， 　　</p><br><p>你可以看到它的成员函数、成员变量， 　　</p><br><p>但是实例本身呢？ 　　</p><br><p>this是一个指针，它时时刻刻指向你这个实例本身。</p><br><p><br><br></p><br><p></p><br><p><span style="font-size:14px; color:#ff0000"><strong>2，this指针的六大属性。</strong></span></p><br><p>我一直都认为若想对某一变量有个准确的认知，就必须了解其六大属性。（我的以前博客中有所介绍<a target="_blank" href="http://blog.csdn.net/qq_35524916/article/details/68954627">点击打开链接</a>）</p><br><p>这些属性是我们对于this指针应该以何种方式正确使用的基础。</p><br><p>（1）名称属性：标识符this表示。</p><br><p>（2）类型属性：类类型 const（类&#20284;于类引用的类型）</p><br><p>（3）&#20540;属性：表示当前调用该函数对象的首地址。</p><br><p>（4）作用域：this指针是编译器默认传给类中非静态函数的隐含形参，所以其作用域在非静态成员函数的函数体内。</p><br><p>（5）链接属性：在该类作用域中，不同类的非静态成员函数中，this这个指针变量的链接属性是内部的，但其所指对象是外部的，即this变量是不同的实体，但指向对象是同一个。</p><br><p>（6）存储类型：this指针是由编译器生成，当类的非静态成员函数的参数个数一定时，this指针存储在ecx寄存器中；若该函数参数个数未定（可变参数函数），则存放在栈中。</p><br><p><br><br></p><br><p><span style="font-size:14px; color:#ff0000"><strong>3，this指针的一些用法。</strong></span></p><br><p>（1）作为当前类的指针，用来区别形参和成员变量名称相同的情况。</p><br><p><span style="white-space:pre"></span>比如本文开头的例子，在Test::Test(int a)函数的作用域中，形参a与类的成员变量a同名，则形参a会将成员变量a隐藏。</p><br><p>我们无法直接访问成员变量a，除了在a前面加上类的名字如<span style="background-color:rgb(240,240,240)">Test::a</span>来表示类Test的成员变量a外，</p><br><p>还可以显示使用this指针来强制访问对象成员<span style="background-color:rgb(240,240,240)">this-&gt;a</span></p><br><p>（2）this作为返回&#20540;，返回当前对象的引用。</p><br><p><span style="white-space:pre"></span>在赋&#20540;运算符重载函数中，为了不减少赋&#20540;运算符的功能，我们需要返回一个引用，来支持重复赋&#20540;（例如a = b =c;）</p><br><p>同样，在类的赋&#20540;运算符重载函数中，我们可以一般使用(<em>this)作为当前对象返回。</em></p><br><p><br><br></p><br><p><strong><span style="font-size:14px; color:#ff0000">4，this指针的注意事项。</span></strong></p><br><p>（1）this指针不能为空。</p><br><p><span style="white-space:pre"></span>因为this指向一个已存在的类的实例对象，可以通过&quot;-&gt;&quot;的方式，访问类中成员，左移this为空是非法的。</p><br><p>例如，在本文开头例子中，将成员变量a的访问权限改写为public，然后执行下面代码，虽然编译会通过，但程序运行会崩溃。</p><br><pre code_snippet_id="2313918" snippet_file_name="blog_20170406_2_9033202" name="code" class="cpp">    Test pT = NULL;<br>    pT-&gt;a = 10;</pre><br><p></p><br>（2）为什么使用的是指针，而不是引用。<br><p><span style="white-space:pre"></span>this指针的类型和类引用的类型都是<span style="background-color:rgb(240,240,240)">Test* const</span>但是，由于历史原因，C&#43;&#43;最初是没有引用，而有指针的，在设计类时，就采用了指针的方式，就导致了现在的局面。虽然引用理论上也可以实现this的功能。</p><br><p>（3）this指针并不是对象的一部分，不影响sizeof的结果。</p><br><p>（4）this指针是由编译器自动生成，作为函数的第一个参数，用户不能显示传递。</p><br><p>（5）this指针不能在构造函数的初始化列表中给对象的成员变量赋&#20540;，</p><br><p><span style="white-space:pre"></span>初始化列表本义是在创建类的实例对象时，给其中成员变量赋初&#20540;。即此时对象还未创建完毕。而this指针是类在创建之后，由编译器自动生成的指针，指向对象的首地址。简单来说，先有对象，后有this指针。所以this指针不能在初始化列表中给成员指针赋初&#20540;。</p><br><p>（6）关于this的存储及传参顺序</p><br><p><span style="white-space:pre"></span>当类的非静态成员函数的参数个数是一定时，this指针存储在ecx寄存器上，通过ecx传递给调用者，此时函数调用约定是_thiscall。若参数个数不确定（可变参数）时，则借助栈，在所有的参数被压栈后，再压入栈中，此时函数调用约定是_cdecl。</p><br><p>示例：将Test类简化，只声明，不定义。（可以方便的观察函数的调用约定和函数名的改写）</p><br><p></p><br><pre code_snippet_id="2313918" snippet_file_name="blog_20170406_3_2729937" name="code" class="cpp">class Test<br>{<br>public:<br>    void Fun(int a);<br>};</pre>其中，Fun(int a)的个数确定，只有一个。则链接时会报错：<pre code_snippet_id="2313918" snippet_file_name="blog_20170406_4_1650925" name="code" class="cpp">error LNK2019: 无法解析的外部符号 &quot;public: void<span style="color:#ff0000;"> <strong>thiscall</strong></span> Test::Fun(int)&quot; (?Fun@Test@@QAEXH@Z)，该符号在函数 _main 中被引用</pre>将void Fun(int a);改为<span style="background-color:rgb(240,240,240)">void Fun(…);</span>则链接时报错为：<br><p></p><br><p></p><br><pre code_snippet_id="2313918" snippet_file_name="blog_20170406_5_854537" name="code" class="cpp">error LNK2019: 无法解析的外部符号 &quot;public: void<span style="color:#ff0000;"> cdecl</span> Test::Fun(…)&quot; (?Fun@Test@@QAAXZZ)，该符号在函数 _main 中被引用</pre>可以证明，当函数参数不同时，函数的调用约定不同，this的存储类型不同，造成了其传参顺序的不同。<br><br></div>
+
       
 
       
@@ -242,7 +258,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/04/11/test/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/04/12/this指针详解/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -256,20 +272,15 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/04/10/第一篇博客/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/04/11/test/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          第一篇博客
+          (no title)
         
       </div>
     </a>
   
-  
-    <a href="/2017/04/12/this指针详解/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">this指针详解</div>
-      <i class="icon-circle-right"></i>
-    </a>
   
 </nav>
 
