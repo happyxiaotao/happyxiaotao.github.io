@@ -158,6 +158,46 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-元素入栈出栈的合法性检测" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>题目描述：</strong><br>元素出栈、入栈顺序的合法性。如：入栈的序列（1,2,3,4,5），出栈序列为（4,5,3,2,1），则合法。<br>入栈的序列（1,2,3,4,5），出栈序列为（4,5,2,3,1），则不合法。</p>
+<p><strong>难点分析：</strong><br>在出栈、入栈操作随机性比较强，不好把握它们的动态变换。<br>但是，要牢记栈的性质“后进先出”。第一个出栈的元素，肯定是当时栈空间中元素中最后进入的。即使，后来又有新的元素入栈，但是我们知道它们的入栈顺序，和出栈顺序，就可以模拟出，当时元素入栈、出栈的情况。</p>
+<p><strong>思路：</strong><br>可以利用一个辅助的栈空间。<br>1，把第一个序列v1中的数字逐个压入栈中，压入的过程中把第二个序列v2中元素与栈首元素比较。<br>2，如果相同，则出栈，同时,v2下标往后移，准备进行下一次比较。<br>3，如果不同，则将v1中数据依次入栈，直到满足1中的条件或者没有数据为止。</p>
+<p><strong>实现代码：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">#include &lt;iostream&gt;</div><div class="line">#include &lt;vector&gt;</div><div class="line">#include &lt;stack&gt;</div><div class="line">using namespace std;</div><div class="line"></div><div class="line">template &lt;typename T&gt;</div><div class="line">bool Check_Out_Stack_Order(const vector&lt;T&gt;&amp; v_1, const vector&lt;T&gt; v_2)</div><div class="line">&#123;</div><div class="line">	//两个序列个数不相同</div><div class="line">	if (v_1.size() != v_2.size()) </div><div class="line">		return false;</div><div class="line"></div><div class="line">	//此时v_1,v_2中元素个数肯定相同</div><div class="line">	stack&lt;T&gt; s;			 //辅助栈，造成v_2序列的栈，这里称为原栈</div><div class="line">	size_t index_1 = 0;  //作为v_1的下标</div><div class="line">	size_t index_2 = 0;  //作为v_2的下标</div><div class="line">	while (index_2 &lt; v_2.size())    //包含了v_1,v_2都为空的情况</div><div class="line">	&#123;</div><div class="line">		//当s为空,或辅助栈顶元素不等于v_2[index_2]时，v_1中元素要不停的入辅助栈，直到没有元素可用</div><div class="line">		while (s.empty() || s.top() != v_2[index_2])</div><div class="line">		&#123;</div><div class="line">			if (index_1 &lt; v_1.size())</div><div class="line">				s.push(v_1[index_1++]);</div><div class="line">			else</div><div class="line">				return false;  //将v_1中数据全部入栈，还是没有在v_2中发现有相等的，说明，两个序列含有的数据不一样</div><div class="line">		&#125;</div><div class="line">		//此时，s.top()=v_2[index_2]，说明原栈此处有出栈操作，得到v_2中的v_2[index]。</div><div class="line">		s.pop();</div><div class="line">		++index_2;</div><div class="line">	&#125;</div><div class="line">	if (s.empty())</div><div class="line">		return true;</div><div class="line">	else</div><div class="line">		return false;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>实验实例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">int main()</div><div class="line">&#123;	</div><div class="line">	vector&lt;int&gt; v1 = &#123; 1,2,3,4,5 &#125;;</div><div class="line">	vector&lt;int&gt; v2 = &#123; 4,5,3,2,1 &#125;;</div><div class="line">	vector&lt;int&gt; v3 = &#123; 4,5,2,3,1 &#125;;</div><div class="line"></div><div class="line">	cout &lt;&lt; &quot;v1 与 v2是否满足出栈、入栈的合法性？&quot;;</div><div class="line">	if (Check_Out_Stack_Order(v1, v2))</div><div class="line">		cout &lt;&lt; &quot; 满足&quot; &lt;&lt; endl;</div><div class="line">	else</div><div class="line">		cout &lt;&lt; &quot;不满足&quot; &lt;&lt; endl;</div><div class="line"></div><div class="line">	cout &lt;&lt; &quot;v1 与 v3是否满足出栈、入栈的合法性？&quot;;</div><div class="line">	if (Check_Out_Stack_Order(v1, v3))</div><div class="line">		cout &lt;&lt; &quot; 满足&quot; &lt;&lt; endl;</div><div class="line">	else</div><div class="line">		cout &lt;&lt; &quot;不满足&quot; &lt;&lt; endl;</div><div class="line"></div><div class="line">	system(&quot;pause&quot;);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/16/元素入栈出栈的合法性检测/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-C++小知识点小总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
